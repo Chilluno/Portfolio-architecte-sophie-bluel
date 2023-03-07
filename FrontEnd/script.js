@@ -1,6 +1,11 @@
-let gallery = document.querySelector(".gallery");
-gallery.replaceChildren('');
 
+const getWorks = async () => {await fetch("http://localhost:5678/api/works")
+.then(result => {
+  return result.json();
+}).catch(error => console.log(error));}
+const works = await getWorks()
+
+/* 
 fetch("http://localhost:5678/api/works")
 .then(result => {
   return result.json();
@@ -13,12 +18,15 @@ fetch("http://localhost:5678/api/works")
   <figcaption>${data.title}</figcaption>
   </figure>`;
   console.log(markup);
-
   gallery.insertAdjacentHTML('beforeend',markup);
-
   });
-  
-})
-.catch(error => console.log(error));
 
+fetch("http://localhost:5678/api/categories")
+.then(result => {
+  return result.json();
+})
+.then(category => {
+category.forEach()
+})
+*/
 
