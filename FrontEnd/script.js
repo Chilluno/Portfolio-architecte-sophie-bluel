@@ -1,32 +1,35 @@
+const getWorks = async() => {
+  let works;
 
-const getWorks = async () => {await fetch("http://localhost:5678/api/works")
-.then(result => {
-  return result.json();
-}).catch(error => console.log(error));}
-const works = await getWorks()
+  const response = await fetch("http://localhost:5678/api/works");
 
-/* 
-fetch("http://localhost:5678/api/works")
-.then(result => {
-  return result.json();
-})
-.then(data => {
-  data.forEach(data => {  
-  const dataURL = data.imageUrl.replace(/[0-9]/g, '');  
-  const markup = `<figure>
-  <img src="assets/${dataURL.slice(18)}" alt="${data.title}">
-  <figcaption>${data.title}</figcaption>
-  </figure>`;
-  console.log(markup);
-  gallery.insertAdjacentHTML('beforeend',markup);
-  });
+  works = await response.json();
 
-fetch("http://localhost:5678/api/categories")
-.then(result => {
-  return result.json();
-})
-.then(category => {
-category.forEach()
-})
-*/
+  works.forEach((data) => {  
+    const dataURL = data.imageUrl.replace(/[0-9]/g, '');  
+    const markup = `<figure>
+    <img src="assets/${dataURL.slice(18)}" alt="${data.title}">
+    <figcaption>${data.title}</figcaption>
+    </figure>`;
+    console.log(markup);
+    document.querySelector(".gallery").insertAdjacentHTML('beforeend',markup);
+    })
 
+    return works;
+} 
+
+getWorks();
+
+const getCategories = async() => {
+  let filters;
+  let worksResults = await getWorks(); 
+
+  const response = await fetch("http://localhost:5678/api/categories");
+
+  filters = await response.json();
+
+  console.log(filters);
+  console.log(worksResults);
+}
+
+getCategories();
