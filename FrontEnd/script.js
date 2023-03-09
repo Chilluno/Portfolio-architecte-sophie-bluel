@@ -18,18 +18,27 @@ const getWorks = async() => {
     return works;
 } 
 
-getWorks();
-
 const getCategories = async() => {
   let filters;
   let worksResults = await getWorks(); 
+  const projectFilter = document.querySelector(".filters");
 
   const response = await fetch("http://localhost:5678/api/categories");
 
   filters = await response.json();
 
+  filters.forEach((filter) => {
+    const filterButton = document.createElement("button");
+    filterButton.innerHTML = filter.name;
+    projectFilter.appendChild(filterButton);
+  });
+
+
+
   console.log(filters);
   console.log(worksResults);
+
+  
 }
 
 getCategories();

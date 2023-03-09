@@ -137,6 +137,30 @@ li:hover {
 	width: 100%;
 
 }
+
+.filters{
+	display: flex;
+	justify-content: center;
+	gap: 10px;
+}
+
+#portfolio button{
+	height: 50px;
+	width: auto;
+	font-family: 'Syne';
+	font-weight: 700;
+	color: #1D6154;
+	background-color: white;
+	text-align: center;
+	border-radius: 60px;
+	padding: 8px 30px 8px 30px;
+	margin: 40px 0px 40px 0px;
+}
+
+.hidden {
+	display: none;
+}
+
 #contact {
 	width: 50%;
 margin: auto;
