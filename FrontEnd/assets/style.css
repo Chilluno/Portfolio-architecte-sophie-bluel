@@ -144,17 +144,25 @@ li:hover {
 	gap: 10px;
 }
 
-#portfolio button{
+#portfolio button {
 	height: 50px;
 	width: auto;
 	font-family: 'Syne';
 	font-weight: 700;
+	font-size: 1.2em;
 	color: #1D6154;
+	border-color: #1D6154;
 	background-color: white;
 	text-align: center;
 	border-radius: 60px;
 	padding: 8px 30px 8px 30px;
 	margin: 40px 0px 40px 0px;
+}
+
+#portfolio button.active{
+	color: white;
+	background-color: #1D6154;
+	border-color: #1D6154;
 }
 
 .hidden {

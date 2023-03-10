@@ -18,9 +18,11 @@ const getWorks = async() => {
     return works;
 } 
 
-const getCategories = async() => {
+
+
+const createFilterbuttons = async() => {
   let filters;
-  let worksResults = await getWorks(); 
+  let worksResults = await getWorks();
   const projectFilter = document.querySelector(".filters");
 
   const response = await fetch("http://localhost:5678/api/categories");
@@ -33,7 +35,7 @@ const getCategories = async() => {
     projectFilter.appendChild(filterButton);
   });
 
-
+  applyCategory(filters,worksResults);
 
   console.log(filters);
   console.log(worksResults);
@@ -41,4 +43,26 @@ const getCategories = async() => {
   
 }
 
-getCategories();
+const applyCategory = (filter, projects) => {
+
+buttonHighlight();
+
+
+
+}
+
+const buttonHighlight = () => {
+  buttons = Array.from(document.querySelectorAll(".filters button"));
+
+  buttons.forEach(button => {
+    button.addEventListener("click", function() {
+    buttons.forEach((button) => {
+      button.classList.remove("active");
+    })
+      button.classList.add("active");
+    })
+});
+}
+
+
+createFilterbuttons();
