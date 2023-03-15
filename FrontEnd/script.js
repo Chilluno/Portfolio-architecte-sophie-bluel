@@ -1,70 +1,57 @@
-const getWorks = async () => {
-  let works;
+const allWorks = await fetch("http://localhost:5678/api/works").then(
+  (response) => response.json()
+);
+const allCategories = await fetch("http://localhost:5678/api/categories").then(
+  (response) => response.json()
+);
 
-  const response = await fetch("http://localhost:5678/api/works");
-
-  works = await response.json();
-
+const displayWorks = (works) => {
+  const gallery = document.querySelector('.gallery');
+    gallery.innerHTML = '';
   works.forEach((data) => {
     const dataURL = data.imageUrl.replace(/[0-9]/g, "");
     const markup = `<figure id="${data.categoryId}">
     <img src="assets/${dataURL.slice(18)}" alt="${data.title}">
     <figcaption>${data.title}</figcaption>
     </figure>`;
-    console.log(markup);
     document.querySelector(".gallery").insertAdjacentHTML("beforeend", markup);
   });
-
-  return works;
 };
 
-const createFilterbuttons = async () => {
-  let filters;
-  let worksResults = await getWorks();
-  const projectFilter = document.querySelector(".filters");
+const filtersContainer = document.querySelector(".filters");
+const filterAllBtn = document.createElement("button");
+filterAllBtn.classList.add("filterbtn", "All");
+filterAllBtn.innerText = "Tous";
+filtersContainer.appendChild(filterAllBtn);
+filterAllBtn.classList.add("active");
 
-  const response = await fetch("http://localhost:5678/api/categories");
 
-  filters = await response.json();
+filterAllBtn.addEventListener("click", () => {
+  document.querySelectorAll(".filters button").forEach((button) => {
+    button.classList.remove("active");
+  });
+  filterAllBtn.classList.add("active");
 
-  filters.forEach((filter) => {
+  displayWorks(allWorks);
+});
+
+const createFilterbuttons = () => {
+
+  allCategories.forEach((category) => {
     const filterButton = document.createElement("button");
     filterButton.className = "filterbtn";
-    filterButton.innerHTML = filter.name;
-    filterButton.setAttribute("id", filter.id);
-    projectFilter.appendChild(filterButton);
-  });
-
-  applyCategory();
-
-  console.log(filters);
-  console.log(worksResults);
-};
-
-const applyCategory = () => {
-  buttons = Array.from(document.querySelectorAll(".filters button"));
-  projectWorks = document.querySelectorAll(".gallery figure");
-
-  buttons.forEach((button) => {
-    button.addEventListener("click", function () {
-      buttons.forEach((button) => {
+    filterButton.innerHTML = category.name;
+    filterButton.setAttribute("id", category.id);
+    filtersContainer.appendChild(filterButton);
+    filterButton.addEventListener("click", () => {
+      document.querySelectorAll(".filters button").forEach((button) => {
         button.classList.remove("active");
       });
-      button.classList.add("active");
-
-      if (button.classList.contains("active")) {
-        projectWorks.forEach((project) => {
-          if (button.getAttribute("id") == project.getAttribute("id")) {
-            project.classList.remove("hidden");
-          } else if (button.getAttribute("id") == "*") {
-            project.classList.remove("hidden");
-          } else {
-            project.classList.add("hidden");
-          }
-        });
-      }
+      filterButton.classList.add("active");
+      displayWorks(allWorks.filter((work) => work.category.id === category.id));
     });
   });
 };
 
+displayWorks(allWorks);
 createFilterbuttons();
