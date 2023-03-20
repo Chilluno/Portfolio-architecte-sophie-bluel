@@ -55,3 +55,34 @@ const createFilterbuttons = () => {
 
 displayWorks(allWorks);
 createFilterbuttons();
+
+console.log(localStorage.getItem('token'));
+
+if(localStorage.getItem('token')){
+  const headerLogin = document.querySelector('header ul').children[2];
+  headerLogin.innerText = "logout";
+  const editBanner = document.createElement('div');
+  const header = document.querySelector("header");
+  editBanner.innerHTML = `<i class="fa-solid fa-pen-to-square"></i><p>Mode édition</p><button class="bannerbtn">publier les changements</button>`;
+
+
+  editBanner.classList.add("banner");
+  header.before(editBanner);
+  
+
+  const editButton = `<div class="editbtn"><i class="fa-solid fa-pen-to-square fa-xl"></i><p>modifier</p></div>`;
+  document.querySelector("#portfolio h2").insertAdjacentHTML("afterend",editButton);
+  document.querySelector("#introduction img").insertAdjacentHTML("afterend",editButton);
+  document.querySelector(".filters").classList.add("hidden");
+
+  headerLogin.addEventListener("click", () => {
+    localStorage.clear();
+    window.location.reload();
+  })
+}
+else{
+  const headerLogin = document.querySelector('header ul').children[2];
+  headerLogin.addEventListener("click", () => {
+  window.location.href = "login.html";
+  })  
+}
