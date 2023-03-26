@@ -42,7 +42,7 @@ if(localStorage.getItem('token')){
         console.log("boop");
       });
       imageDiv.appendChild(deleteButton);
-      modalContent.insertAdjacentHTML("beforeend",imageDiv.outerHTML); 
+      modalContent.appendChild(imageDiv); 
       
       
 
