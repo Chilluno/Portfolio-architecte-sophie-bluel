@@ -28,20 +28,40 @@ if(localStorage.getItem('token')){
      galleryModal.classList.remove("hidden");
 
      const imageArray = [...galleryImages];
-        
-     imageArray.forEach(image => {
+     let imageId = 0;
+
+      imageArray.forEach(image => {
+      
+      imageId++;  
+
       const imageDiv = document.createElement("div");
+      imageDiv.setAttribute("id", imageId.toString());
+      imageDiv.classList.add("modal-image");
+      imageDiv.innerHTML = image.outerHTML;
+
       const deleteButton = document.createElement("div");
       deleteButton.classList.add("deletebtn");
       deleteButton.innerHTML = `<i class="fa-solid fa-trash-can"></i>`;
 
-      imageDiv.classList.add("modal-image");
-      imageDiv.innerHTML = image.outerHTML;
+      
       imageDiv.insertAdjacentText("beforeend","éditer");
-      deleteButton.addEventListener("click", () => {
-        console.log("boop");
+      deleteButton.addEventListener("click", (imageId) => {
+        //const activeImage = document.querySelectorAll(".modal-image");
+        //console.log(activeImage[imageId]);
       });
       imageDiv.appendChild(deleteButton);
+      imageDiv.addEventListener("mouseover", () => {
+        const moveButton = document.createElement("div");
+        moveButton.classList.add("movebtn");
+        moveButton.innerHTML = `<i class="fa-solid fa-up-down-left-right"></i>`;
+        imageDiv.appendChild(moveButton);
+      });
+
+      imageDiv.addEventListener("mouseout", () => {
+        document.querySelector(".movebtn").remove();
+      });
+
+
       modalContent.appendChild(imageDiv); 
       
       
