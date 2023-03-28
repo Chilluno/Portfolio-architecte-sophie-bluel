@@ -1,4 +1,32 @@
+const allWorks = await fetch("http://localhost:5678/api/works").then(
+  (response) => response.json()
+);
+
+const allCategories = await fetch("http://localhost:5678/api/categories").then(
+  (response) => response.json()
+);
+
+
 console.log(localStorage.getItem("token"));
+console.log(allWorks);
+
+const getWorks = (works) => {
+
+ works.forEach((data) => {
+  const dataURL = data.imageUrl.replace(/[0-9]/g, "");
+  const markup = `<figure id="${data.categoryId}">
+  <img id="${data.id}"src="assets/${dataURL.slice(18)}" alt="${data.title}">
+  <figcaption>éditer</figcaption>
+  <div class="deletebtn"><i class="fa-solid fa-trash-can"></i></div>
+  </figure>`;
+  
+  document.querySelector(".modal-content").insertAdjacentHTML("beforeend", markup);
+
+ 
+
+      
+ }) 
+}
 
 if (localStorage.getItem("token")) {
   const headerLogin = document.querySelector("header ul").children[2];
@@ -23,49 +51,17 @@ if (localStorage.getItem("token")) {
   const galleryModal = document.getElementById("modal");
   const closeModalBtn = document.querySelector(".close");
   const modalContent = document.querySelector(".modal-content");
-  const galleryImages = document
-    .getElementById("portfolio")
-    .getElementsByTagName("img");
   const deleteButtons = document.getElementsByClassName("deletebtn");
 
   editGallery.addEventListener("click", () => {
     galleryModal.classList.remove("hidden");
 
-    const imageArray = [...galleryImages];
-    let imageId = 0;
+      getWorks(allWorks);
+    
 
-    imageArray.forEach((image) => {
-      imageId++;
-
-      const imageDiv = document.createElement("div");
-      imageDiv.classList.add("modal-image");
-      imageDiv.innerHTML = image.outerHTML;
-
-      const deleteButton = document.createElement("div");
-      deleteButton.setAttribute("id", imageId.toString());
-      deleteButton.classList.add("deletebtn");
-      deleteButton.innerHTML = `<i class="fa-solid fa-trash-can"></i>`;
-
-      imageDiv.insertAdjacentText("beforeend", "éditer");
-
-      imageDiv.appendChild(deleteButton);
-
-      imageDiv.addEventListener("mouseover", () => {
-        const moveButton = document.createElement("div");
-        moveButton.classList.add("movebtn");
-        moveButton.innerHTML = `<i class="fa-solid fa-up-down-left-right"></i>`;
-        imageDiv.appendChild(moveButton);
-      });
-
-      imageDiv.addEventListener("mouseout", () => {
-        document.querySelector(".movebtn").remove();
-      });
-
-      modalContent.appendChild(imageDiv);
-    });
-
-    Array.from(deleteButtons).forEach((button) => {
-      button.addEventListener("click", () => {
+    /*Array.from(deleteButtons).forEach((button) => {
+      button.addEventListener("click", (e) => {
+        e.preventDefault();
         console.log(button.getAttribute("id"));
 
         const token = localStorage.getItem("token");
@@ -74,12 +70,12 @@ if (localStorage.getItem("token")) {
         fetch("http://localhost:5678/api/works/" + button.getAttribute("id"), {
           method: "DELETE",
           headers: {
-            "Content-Type": "application/json;charset=utf-8",
+            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
         });
       });
-    });
+    });*/
   });
 
   closeModalBtn.addEventListener("click", () => {

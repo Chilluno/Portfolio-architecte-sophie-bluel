@@ -323,16 +323,21 @@ li:hover {
   gap: 6px;
   margin-bottom: 60px;
 }
-.modal-image{
- display: flex;
- position: relative;
- flex-direction: column;
- text-align: start;
+
+.modal-content figure{
+  position: relative;
 }
 
 .modal-content img{
+display: flex;
+flex-direction: column;
+text-align: start;
 width: 100px;
 height: 150px;
+}
+
+.modal-content figcaption {
+  text-align: start;
 }
 
 .movebtn {
