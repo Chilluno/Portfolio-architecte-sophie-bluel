@@ -14,18 +14,52 @@ const getWorks = (works) => {
 
  works.forEach((data) => {
   const dataURL = data.imageUrl.replace(/[0-9]/g, "");
-  const markup = `<figure id="${data.categoryId}">
-  <img id="${data.id}"src="assets/${dataURL.slice(18)}" alt="${data.title}">
+  const markup = `<figure id="${data.categoryId}" class="modal-image">
+  <img id="${data.id}" src="assets/${dataURL.slice(18)}" alt="${data.title}">
   <figcaption>éditer</figcaption>
-  <div class="deletebtn"><i class="fa-solid fa-trash-can"></i></div>
+  <div id="${data.id}" class="deletebtn"><i class="fa-solid fa-trash-can"></i></div>
   </figure>`;
   
   document.querySelector(".modal-content").insertAdjacentHTML("beforeend", markup);
-
- 
-
       
+  document.querySelectorAll(".modal-image").forEach((image) =>{
+    image.addEventListener("mouseover", () => {
+      const moveButton = document.createElement("div");
+      moveButton.classList.add("movebtn");
+      moveButton.innerHTML = `<i class="fa-solid fa-up-down-left-right"></i>`;
+      image.appendChild(moveButton)
+    });
+  });
+
+  document.querySelectorAll(".modal-image").forEach((image) =>{
+    image.addEventListener("mouseout", () => {
+      document.querySelector(".movebtn").remove();
+    });
+  });
+
  }) 
+}
+
+const deleteWorks = () => {
+
+  document.querySelectorAll(".deletebtn").forEach((deletebtn) => {
+    deletebtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      console.log(deletebtn.getAttribute("id"));
+
+      const token = localStorage.getItem("token");
+      console.log(token);
+
+      /*
+      fetch("http://localhost:5678/api/works/" + button.getAttribute("id"), {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },*/
+      });
+  })
+
 }
 
 if (localStorage.getItem("token")) {
@@ -57,7 +91,7 @@ if (localStorage.getItem("token")) {
     galleryModal.classList.remove("hidden");
 
       getWorks(allWorks);
-    
+      deleteWorks();
 
     /*Array.from(deleteButtons).forEach((button) => {
       button.addEventListener("click", (e) => {
