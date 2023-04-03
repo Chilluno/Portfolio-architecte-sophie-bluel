@@ -8,7 +8,7 @@ const allCategories = await fetch("http://localhost:5678/api/categories").then(
 
 
 console.log(localStorage.getItem("token"));
-console.log(allWorks);
+console.log(allCategories);
 
 const getWorks = (works) => {
 
@@ -50,16 +50,17 @@ const deleteWorks = () => {
       const token = localStorage.getItem("token");
       console.log(token);
 
-      /*
-      fetch("http://localhost:5678/api/works/" + button.getAttribute("id"), {
+      
+      fetch("http://localhost:5678/api/works/" + deletebtn.getAttribute("id"), {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },*/
+          "accept": "*/*",
+          "Authorization": `Bearer ${token}`,
+        },
       });
   })
-
+})
 }
 
 if (localStorage.getItem("token")) {
@@ -85,7 +86,7 @@ if (localStorage.getItem("token")) {
   const galleryModal = document.getElementById("modal");
   const closeModalBtn = document.querySelector(".close");
   const modalContent = document.querySelector(".modal-content");
-  const deleteButtons = document.getElementsByClassName("deletebtn");
+  const modalBtn = document.querySelector(".modalbtn");
 
   editGallery.addEventListener("click", () => {
     galleryModal.classList.remove("hidden");
@@ -93,23 +94,29 @@ if (localStorage.getItem("token")) {
       getWorks(allWorks);
       deleteWorks();
 
-    /*Array.from(deleteButtons).forEach((button) => {
-      button.addEventListener("click", (e) => {
-        e.preventDefault();
-        console.log(button.getAttribute("id"));
+    modalBtn.addEventListener("click", () =>{
+      const backBtn = `<span class="backbtn"><i class="fa-solid fa-arrow-left"</i></span>`;
+      const modalForm = `<form>
+      <div class="submit-img-wrapper">
+      <label for="image">
+      <i class="fa-sharp fa-image"></i>
+      <input type="file" id="image" name="image" accept="image/jpg, image/png">
+      jpg, png : 4mo max</label>
+      </div>
+      <label for="title">Titre</label>
+      <input type="text" id="title" name="title"/>
+      <label for="category">Catégorie</label>
+      <select id="category" name="category"> 
+      </select>
+      </form>`;
 
-        const token = localStorage.getItem("token");
-        console.log(token);
+      document.querySelector(".modal-wrapper").insertAdjacentHTML("afterbegin",backBtn);
+      document.querySelector(".modal-title").innerText = "Ajout photo";
+      modalContent.innerHTML = "";
+      document.querySelector(".modal-content").insertAdjacentHTML("afterbegin", modalForm);
+      
+    });
 
-        fetch("http://localhost:5678/api/works/" + button.getAttribute("id"), {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-      });
-    });*/
   });
 
   closeModalBtn.addEventListener("click", () => {

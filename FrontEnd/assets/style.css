@@ -340,6 +340,42 @@ height: 150px;
   text-align: start;
 }
 
+.modal-content form{
+  width: 60%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;
+  
+}
+
+
+.modal-content label{
+  margin: 2em 0 1em 0;
+}
+
+.modal-content input{
+  height: 50px;
+  font-size: 1.2em;
+}
+
+.modal-content select {
+  height: 50px;
+  font-size: 1.2em;
+}
+
+.submit-img-wrapper {
+  background-color: #E8F1F6;
+  margin: auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+
 .movebtn {
   position: absolute;
   display: flex;
@@ -383,6 +419,14 @@ height: 150px;
   border-radius: 60px;
   padding: 8px 30px 8px 30px;
   margin: 40px 0px 40px 0px;
+}
+
+.backbtn {
+  color: #000;
+  float: left;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 .close {
