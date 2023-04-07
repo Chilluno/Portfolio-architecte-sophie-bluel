@@ -12,6 +12,7 @@ console.log(allCategories);
 
 const getWorks = (works) => {
 
+
  works.forEach((data) => {
   const dataURL = data.imageUrl.replace(/[0-9]/g, "");
   const markup = `<figure id="${data.categoryId}" class="modal-image">
@@ -45,17 +46,17 @@ const deleteWorks = () => {
   document.querySelectorAll(".deletebtn").forEach((deletebtn) => {
     deletebtn.addEventListener("click", (e) => {
       e.preventDefault();
+      const Id = deletebtn.getAttribute("id");
       console.log(deletebtn.getAttribute("id"));
 
       const token = localStorage.getItem("token");
       console.log(token);
 
       
-      fetch("http://localhost:5678/api/works/" + deletebtn.getAttribute("id"), {
+      fetch(`http://localhost:5678/api/works/${Id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          "accept": "*/*",
           "Authorization": `Bearer ${token}`,
         },
       });
@@ -84,9 +85,10 @@ if (localStorage.getItem("token")) {
 
   const editGallery = document.querySelector("#portfolio .editbtn");
   const galleryModal = document.getElementById("modal");
-  const closeModalBtn = document.querySelector(".close");
+  const closeModalBtn = document.querySelectorAll(".close");
   const modalContent = document.querySelector(".modal-content");
   const modalBtn = document.querySelector(".modalbtn");
+  const backBtn = document.querySelector(".backbtn");
 
   editGallery.addEventListener("click", () => {
     galleryModal.classList.remove("hidden");
@@ -95,33 +97,26 @@ if (localStorage.getItem("token")) {
       deleteWorks();
 
     modalBtn.addEventListener("click", () =>{
-      const backBtn = `<span class="backbtn"><i class="fa-solid fa-arrow-left"</i></span>`;
-      const modalForm = `<form>
-      <div class="submit-img-wrapper">
-      <label for="image">
-      <i class="fa-sharp fa-image"></i>
-      <input type="file" id="image" name="image" accept="image/jpg, image/png">
-      jpg, png : 4mo max</label>
-      </div>
-      <label for="title">Titre</label>
-      <input type="text" id="title" name="title"/>
-      <label for="category">Catégorie</label>
-      <select id="category" name="category"> 
-      </select>
-      </form>`;
-
-      document.querySelector(".modal-wrapper").insertAdjacentHTML("afterbegin",backBtn);
-      document.querySelector(".modal-title").innerText = "Ajout photo";
-      modalContent.innerHTML = "";
-      document.querySelector(".modal-content").insertAdjacentHTML("afterbegin", modalForm);
       
+      document.querySelector(".modal-works").classList.add("hidden");
+      document.querySelector(".modal-create").classList.remove("hidden");
+
     });
+
+    backBtn.addEventListener("click", () => {
+
+      document.querySelector(".modal-create").classList.add("hidden");
+      document.querySelector(".modal-works").classList.remove("hidden");
+
+    })
 
   });
 
-  closeModalBtn.addEventListener("click", () => {
-    galleryModal.classList.add("hidden");
-    modalContent.innerHTML = "";
+  closeModalBtn.forEach(closebtn => {
+      closebtn.addEventListener("click", () => {
+      galleryModal.classList.add("hidden");
+      modalContent.innerHTML = "";
+  })
   });
 
   window.onclick = (event) => {
@@ -141,3 +136,39 @@ if (localStorage.getItem("token")) {
     window.location.href = "login.html";
   });
 }
+
+const form = document.querySelector(".create-work-form");
+
+const createWork = (event) => {
+event.preventDefault();
+const token = localStorage.getItem("token");
+
+const formData = new formData();
+
+formData.append("title",document.getElementById("title").value);
+formData.append("category",+document.getElementById("category").value);
+formData.append("image",document.getElementById("image").files[0]);
+
+
+fetch("http://localhost:5678/api/works", {
+  method: "POST",
+  headers: {
+    Authorization: `Bearer ${token}`
+  },
+  body: formData
+})
+.then(data => console.log(data))
+.catch(error => console.error(error))
+}
+
+form.addEventListener("submit", createWork);
+
+const optionList = document.querySelector("select");
+
+allCategories.forEach(category => {
+  const categoryOption = document.createElement("option");
+  categoryOption.setAttribute("value", `${category.id}`);
+  categoryOption.innerHTML= category.name;
+  optionList.appendChild(categoryOption);
+  console.log(categoryOption);
+})
