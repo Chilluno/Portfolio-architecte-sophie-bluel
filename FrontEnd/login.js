@@ -1,8 +1,7 @@
-const formLogin = document.querySelector("#login form");
+const formLogin = document.querySelector("form");
 
 formLogin.addEventListener("submit", (event) => {
   event.preventDefault();
-
   const formData = new FormData(formLogin);
   const data = Object.fromEntries(formData);
 
@@ -20,19 +19,23 @@ formLogin.addEventListener("submit", (event) => {
         console.log("user is auth");
         localStorage.setItem("token", data.token);
         window.location.href = "index.html";
-      } else {
-        const formError = document.createElement("p");
-        formError.innerText = "";
-        console.log("user is not found");
-        formError.classList.add("error");
-        formError.innerText = "Erreur dans l’identifiant ou le mot de passe.";
-        formLogin.parentNode.insertBefore(formError,formLogin.nextSibling);
+        
+      } 
+      else {
+        if(!document.querySelector(".error")){
+          const formError = document.getElementById("error");
+          formError.innerText = "";
+          console.log("user is not found");
+          formError.classList.add("error");
+          formError.innerText = "Erreur dans l’identifiant ou le mot de passe.";
+        }
       }
     })
     .catch((error) => {
       console.error("Error:", error);
     });
 });
+
 
 // loginBtn.addEventListener('click', (event) => {
 // on met en place un évènement pour empêcher le comportement par défaut du bouton
