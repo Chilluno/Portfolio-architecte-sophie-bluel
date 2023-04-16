@@ -6,12 +6,11 @@ const allCategories = await fetch("http://localhost:5678/api/categories").then(
 );
 
 const displayWorks = (works) => {
-  const gallery = document.querySelector('.gallery');
-    gallery.innerHTML = '';
+  const gallery = document.querySelector(".gallery");
+  gallery.innerHTML = "";
   works.forEach((data) => {
-    const dataURL = data.imageUrl.replace(/[0-9]/g, "");
     const markup = `<figure id="${data.categoryId}">
-    <img src="assets/${dataURL.slice(18)}" alt="${data.title}">
+    <img src=${data.imageUrl} alt="${data.title}">
     <figcaption>${data.title}</figcaption>
     </figure>`;
     document.querySelector(".gallery").insertAdjacentHTML("beforeend", markup);
@@ -25,7 +24,6 @@ filterAllBtn.innerText = "Tous";
 filtersContainer.appendChild(filterAllBtn);
 filterAllBtn.classList.add("active");
 
-
 filterAllBtn.addEventListener("click", () => {
   document.querySelectorAll(".filters button").forEach((button) => {
     button.classList.remove("active");
@@ -36,7 +34,6 @@ filterAllBtn.addEventListener("click", () => {
 });
 
 const createFilterbuttons = () => {
-
   allCategories.forEach((category) => {
     const filterButton = document.createElement("button");
     filterButton.className = "filterbtn";
@@ -56,4 +53,3 @@ const createFilterbuttons = () => {
 displayWorks(allWorks);
 createFilterbuttons();
 
-export {allWorks};
