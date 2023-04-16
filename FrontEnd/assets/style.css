@@ -172,6 +172,7 @@ nav ul {
 nav li {
   padding: 0 10px;
   font-size: 1.2em;
+  cursor: pointer;
 }
 
 li:hover {
@@ -280,6 +281,7 @@ li:hover {
   border-radius: 60px;
   padding: 8px 30px 8px 30px;
   margin: 40px 0px 40px 0px;
+  cursor: pointer;
 }
 
 #portfolio .filterbtn.active {
@@ -476,6 +478,7 @@ cursor: pointer;
   margin: 40px 0px 40px 0px;
 }
 
+
 .backbtn {
   color: #000;
   float: left;
@@ -502,6 +505,7 @@ cursor: pointer;
 
 .error {
   color: red;
+  margin: 10px 0 0 0;
 }
 
 #contact {
@@ -580,6 +584,12 @@ input[type="submit"] {
   width: 180px;
   text-align: center;
   border-radius: 60px;
+  cursor: pointer;
+}
+
+input[type="submit"]:disabled,
+input[disabled] {
+background-color: #A7A7A7;
 }
 
 footer nav ul {
