@@ -373,6 +373,13 @@ height: 150px;
   margin-top: 40px;
 }
 
+#submit-img {
+  width: 130px;
+  height: 200px;
+  object-fit: cover;
+
+}
+
 .submit-img-wrapper {
   position: relative;
   background-color: #E8F1F6;
@@ -478,6 +485,9 @@ cursor: pointer;
   margin: 40px 0px 40px 0px;
 }
 
+.modalbtn:hover{
+  background-color:#0E2F28;
+}
 
 .backbtn {
   color: #000;
@@ -506,6 +516,10 @@ cursor: pointer;
 .error {
   color: red;
   margin: 10px 0 0 0;
+}
+
+.opaque{
+  opacity: 0;
 }
 
 #contact {
@@ -586,6 +600,11 @@ input[type="submit"] {
   border-radius: 60px;
   cursor: pointer;
 }
+
+input[type="submit"]:hover{
+background-color: #0E2F28
+}
+
 
 input[type="submit"]:disabled,
 input[disabled] {

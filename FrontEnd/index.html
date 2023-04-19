@@ -79,7 +79,7 @@
         <h2 class="modal-title">Ajout photo</h2>
         <form class="create-work-form">
           <div class="submit-img-wrapper">
-          <img id="submit-img" src="#">
+          <img id="submit-img" src="#" alt="" class="hidden">
           <i class="fa-sharp fa-solid fa-image fa-5x"></i>  
           <label for="image">
             + Ajouter Photo
@@ -92,11 +92,11 @@
           <div class="category-options">
           <label for="category">Catégorie</label>
           <select id="category" name="category">
-          <option value=""></option> 
           </select>
           </div>
           <hr>
           <input id="creatework" class="modalbtn-create" type="submit" value="Valider" disabled/>
+          <span id="error"></span>
           </form>
       </div>
 		</aside>
