@@ -1,10 +1,12 @@
-const allWorks = await fetch("http://localhost:5678/api/works").then(
-  (response) => response.json()
+const allWorks = await fetch("http://localhost:5678/api/works")
+    .then((response) => response.json()
 );
 
 const allCategories = await fetch("http://localhost:5678/api/categories").then(
   (response) => response.json()
 );
+
+
 
 console.log(localStorage.getItem("token"));
 console.log(allCategories);
@@ -40,34 +42,9 @@ const getWorks = (works) => {
   });
 };
 
-const deleteWorks = () => {
-  document.querySelectorAll(".deletebtn").forEach((deletebtn) => {
-    deletebtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      const Id = deletebtn.getAttribute("id");
-
-      const token = localStorage.getItem("token");
-      deletebtn.parentElement.classList.add("hidden");
-      
-      const galleryWork = document.querySelectorAll(`[src=${CSS.escape(deletebtn.parentElement.children[0].src)}`);
-
-        galleryWork.forEach((work) => {
-          console.log(work.parentNode);
-          work.parentNode.remove();
-        });
-      
-      fetch(`http://localhost:5678/api/works/${Id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      })
-    });
-  });
-};
 
 if (localStorage.getItem("token")) {
+
   const headerLogin = document.querySelector("header ul").children[2];
   headerLogin.innerText = "logout";
   const editBanner = document.createElement("div");
@@ -92,15 +69,13 @@ if (localStorage.getItem("token")) {
   const modalContent = document.querySelector(".modal-content");
   const modalBtn = document.querySelector(".modalbtn");
   const backBtn = document.querySelector(".backbtn");
-
   
 
-  editGallery.addEventListener("click", () => {
+  editGallery.addEventListener("click", async () => {
+
     galleryModal.classList.remove("hidden");
 
-    getWorks(allWorks);
-    deleteWorks();
-    
+    updateWorks();    
 
     modalBtn.addEventListener("click", () => {
       document.querySelector(".modal-works").classList.add("hidden");
@@ -152,6 +127,7 @@ const createWork = (event) => {
 
   console.log(document.getElementById("image").files[0]);
 
+
   fetch("http://localhost:5678/api/works", {
     method: "POST",
     headers: {
@@ -162,6 +138,7 @@ const createWork = (event) => {
     .then((data) => console.log(data))
     .catch((error) => console.error(error));
     
+    newWork();
 }
 
 const optionList = document.querySelector("select");
@@ -217,9 +194,85 @@ const displayImage = (e) => {
 
 fileInput.addEventListener("change", displayImage);
 
- 
+const updateWorks = () => {
+  fetch("http://localhost:5678/api/works")
+  .then(response => response.json())
+  .then(data => data.forEach((data) => {
+    const markup = `<figure id="${data.categoryId}" class="modal-image">
+  <img id="${data.id}" src=${data.imageUrl} alt="${data.title}">
+  <figcaption>éditer</figcaption>
+  <div id="${
+    data.id
+  }" class="deletebtn"><i class="fa-solid fa-trash-can"></i></div>
+  </figure>`;
 
+    document
+      .querySelector(".modal-content")
+      .insertAdjacentHTML("beforeend", markup);
 
+    document.querySelectorAll(".modal-image").forEach((image) => {
+      image.addEventListener("mouseover", () => {
+        const moveButton = document.createElement("div");
+        moveButton.classList.add("movebtn");
+        moveButton.innerHTML = `<i class="fa-solid fa-up-down-left-right"></i>`;
+        image.appendChild(moveButton);
+      });
+    });
+
+    document.querySelectorAll(".modal-image").forEach((image) => {
+      image.addEventListener("mouseout", () => {
+        document.querySelector(".movebtn").remove();
+      });
+    });
+  }))
+  .then(res => document.querySelectorAll(".deletebtn").forEach((deletebtn) => {
+    deletebtn.addEventListener("click", (e) => {
+      console.log(res);
+      e.preventDefault();
+      const Id = deletebtn.getAttribute("id");
+
+      const token = localStorage.getItem("token");
+      deletebtn.parentElement.classList.add("hidden");
+      
+      const galleryWork = document.querySelectorAll(`[alt=${CSS.escape(deletebtn.parentElement.children[0].alt)}`);
+
+        galleryWork.forEach((work) => {
+          console.log(work.parentNode);
+          work.parentNode.remove();
+        });
+      
+      fetch(`http://localhost:5678/api/works/${Id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      })
+    });
+  }))
+}
+
+const newWork = () => {
+    const work = document.createElement("figure");
+    const workImg = document.createElement("img");
+    workImg.setAttribute("alt", document.getElementById("title").value);
+    const workCaption = document.createElement("figcaption");
+    work.setAttribute("id", document.getElementById("category").value);
+    workCaption.innerText = document.getElementById("title").value;
+
+    if (document.getElementById("image").files[0]) {
+      const reader = new FileReader();
+      reader.addEventListener('load', () => {
+          workImg.setAttribute('src', reader.result);
+      });        reader.readAsDataURL(document.getElementById("image").files[0]);
+
+    }
+    
+    work.appendChild(workImg);
+    work.appendChild(workCaption);
+
+    document.querySelector(".gallery").appendChild(work);
+}
 
 
 
